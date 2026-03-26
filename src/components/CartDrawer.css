@@ -1,0 +1,249 @@
+/* ── CartDrawer.css ─────────────────────────────────────── */
+.cd-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 900;
+}
+.cd-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 420px;
+  max-width: 100vw;
+  background: #0d0d0d;
+  border-left: 1px solid #1e1e1e;
+  z-index: 901;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header */
+.cd-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 32px 28px 24px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.cd-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #f0ebe0;
+  margin: 0 0 4px;
+}
+.cd-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin: 0;
+}
+.cd-close {
+  background: none;
+  border: 1px solid #2a2a2a;
+  color: #5a5248;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 1px;
+  transition: border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+.cd-close:hover {
+  border-color: #C9A84C;
+  color: #C9A84C;
+}
+
+/* Items */
+.cd-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 0;
+}
+.cd-items::-webkit-scrollbar { width: 3px; }
+.cd-items::-webkit-scrollbar-track { background: transparent; }
+.cd-items::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+
+.cd-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  gap: 14px;
+}
+.cd-empty-icon {
+  font-size: 2.5rem;
+  color: #2a2a2a;
+  margin: 0;
+}
+.cd-empty-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #4a4540;
+  margin: 0;
+}
+
+/* Item */
+.cd-item {
+  display: flex;
+  gap: 16px;
+  padding: 18px 28px;
+  border-bottom: 1px solid #141414;
+  overflow: hidden;
+}
+.cd-item-img {
+  width: 76px;
+  height: 76px;
+  object-fit: cover;
+  border-radius: 1px;
+  flex-shrink: 0;
+  background: #1a1a1a;
+}
+.cd-item-info {
+  flex: 1;
+  min-width: 0;
+}
+.cd-item-brand {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin: 0 0 3px;
+}
+.cd-item-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  color: #e8e0d0;
+  margin: 0 0 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cd-item-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f0ebe0;
+  margin: 0 0 10px;
+}
+.cd-qty-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cd-qty-btn {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #a09278;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 1px;
+  transition: border-color 0.2s, color 0.2s;
+  line-height: 1;
+}
+.cd-qty-btn:hover {
+  border-color: #C9A84C;
+  color: #C9A84C;
+}
+.cd-qty {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e8e0d0;
+  min-width: 20px;
+  text-align: center;
+}
+.cd-remove {
+  background: none;
+  border: none;
+  color: #3a3530;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-left: 4px;
+  transition: color 0.2s;
+  padding: 0;
+}
+.cd-remove:hover {
+  color: #8a3028;
+}
+
+/* Footer */
+.cd-footer {
+  padding: 24px 28px 32px;
+  border-top: 1px solid #1a1a1a;
+  background: #0a0a0a;
+}
+.cd-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.cd-total-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6a6258;
+}
+.cd-total-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #f0ebe0;
+}
+.cd-tax-note {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.62rem;
+  color: #3a3530;
+  margin: 0 0 20px;
+  letter-spacing: 0.06em;
+}
+.cd-checkout-btn {
+  width: 100%;
+  background: #C9A84C;
+  border: none;
+  color: #0a0a0a;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 16px;
+  cursor: pointer;
+  border-radius: 1px;
+  transition: background 0.3s, transform 0.2s;
+}
+.cd-checkout-btn:hover {
+  background: #e8c060;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .cd-drawer { width: 100vw; }
+  .cd-header, .cd-item, .cd-footer { padding-left: 20px; padding-right: 20px; }
+}
