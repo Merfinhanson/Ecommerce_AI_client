@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { products, categories } from "../data/products";
 import ProductCard from "../components/ProductCard";
 import CartDrawer from "../components/CartDrawer";

@@ -122,7 +122,7 @@ export default function LoginPage() {
                 <span className="checkbox-custom" />
                 <span>Remember me</span>
               </label>
-              <a href="#" className="login-forgot">Forgot password?</a>
+              <button type="button" className="login-forgot" onClick={() => alert('Forgot password feature coming soon!')}>Forgot password?</button>
             </div>
 
             <motion.button
