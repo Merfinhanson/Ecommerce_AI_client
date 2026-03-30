@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform } from "framer-motion";
 import { productAPI } from "../services/api";
+import { products as staticProducts } from "../data/products";
 import ProductCard from "../components/ProductCard";
 import CartDrawer from "../components/CartDrawer";
 import { useCart } from "../context/CartContext";
@@ -83,8 +84,10 @@ export default function LandingPage() {
           setProducts(transformedProducts);
         }
       } catch (err) {
-        setError(err.message);
-        console.error('Failed to fetch products:', err);
+        console.error('Failed to fetch products from API, using static data:', err);
+        // Fallback to static data when API fails
+        setProducts(staticProducts);
+        setError(null);
       } finally {
         setLoading(false);
       }
