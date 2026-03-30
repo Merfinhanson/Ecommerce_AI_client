@@ -47,6 +47,10 @@
   color: #e8e0d0;
   text-decoration: none;
   transition: color 0.3s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
 }
 .lp-nav-link:hover {
   color: #C9A84C;
@@ -857,4 +861,149 @@
   .lp-hero-headline { font-size: 3rem; }
   .lp-nav-inner { padding: 0 20px; }
   .lp-floating-cart { bottom: 20px; right: 20px; }
+}
+
+/* ── ABOUT SECTION ─────────────────────────────────────── */
+.lp-about {
+  padding: 120px 40px;
+  background: linear-gradient(180deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);
+}
+
+.lp-about-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.lp-about-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 400;
+  color: #f0ebe0;
+  margin-bottom: 32px;
+}
+
+.lp-about-title em {
+  color: #C9A84C;
+  font-style: italic;
+}
+
+.lp-about-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #8a7d6a;
+  max-width: 700px;
+  margin: 0 auto 60px;
+}
+
+.lp-about-stats {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  flex-wrap: wrap;
+}
+
+.lp-about-stat {
+  text-align: center;
+}
+
+.lp-about-number {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 600;
+  color: #C9A84C;
+  margin-bottom: 8px;
+}
+
+.lp-about-label {
+  font-size: 0.9rem;
+  color: #8a7d6a;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ── CONTACT SECTION ──────────────────────────────────── */
+.lp-contact {
+  padding: 120px 40px;
+  background: #0a0a0a;
+  border-top: 1px solid #1a1a1a;
+}
+
+.lp-contact-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.lp-contact-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 400;
+  color: #f0ebe0;
+  margin-bottom: 24px;
+}
+
+.lp-contact-title em {
+  color: #C9A84C;
+  font-style: italic;
+}
+
+.lp-contact-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #8a7d6a;
+  margin-bottom: 48px;
+}
+
+.lp-contact-info {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.lp-contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lp-contact-label {
+  font-size: 0.75rem;
+  color: #C9A84C;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.lp-contact-value {
+  font-size: 1rem;
+  color: #e8e0d0;
+}
+
+/* ── FOOTER ───────────────────────────────────────────── */
+.lp-footer {
+  padding: 60px 40px;
+  background: #050505;
+  border-top: 1px solid #1a1a1a;
+}
+
+.lp-footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.lp-footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  color: #f0ebe0;
+  margin-bottom: 16px;
+}
+
+.lp-footer-text {
+  font-size: 0.85rem;
+  color: #5a5a5a;
 }

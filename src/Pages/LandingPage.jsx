@@ -145,7 +145,7 @@ export default function LandingPage() {
             <button onClick={() => document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' })} className="lp-nav-link">Products</button>
             <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="lp-nav-link">About</button>
           </div>
-          <div className="lp-nav-logo">TECHSTORE</div>
+          <div className="lp-nav-logo">MAISON</div>
           <div className="lp-nav-actions">
             <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="lp-nav-link">Contact</button>
             <button className="lp-nav-signin" onClick={() => navigate('/login')}>Sign In</button>
@@ -277,6 +277,78 @@ export default function LandingPage() {
           ))}
         </motion.div>
       </section>
+
+      {/* About Section */}
+      <section id="about" className="lp-about">
+        <motion.div 
+          className="lp-about-content"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="lp-about-title">About <em>MAISON</em></h2>
+          <p className="lp-about-text">
+            Founded in 2024, MAISON curates the finest electronics and tech accessories 
+            from around the world. We believe in quality, innovation, and exceptional 
+            customer experience. Every product in our collection is handpicked to meet 
+            the highest standards of craftsmanship and performance.
+          </p>
+          <div className="lp-about-stats">
+            <div className="lp-about-stat">
+              <span className="lp-about-number">50k+</span>
+              <span className="lp-about-label">Happy Customers</span>
+            </div>
+            <div className="lp-about-stat">
+              <span className="lp-about-number">500+</span>
+              <span className="lp-about-label">Premium Products</span>
+            </div>
+            <div className="lp-about-stat">
+              <span className="lp-about-number">24/7</span>
+              <span className="lp-about-label">Customer Support</span>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="lp-contact">
+        <motion.div 
+          className="lp-contact-content"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="lp-contact-title">Get in <em>Touch</em></h2>
+          <p className="lp-contact-text">
+            Have questions? We're here to help. Reach out to our team for any 
+            inquiries about products, orders, or partnerships.
+          </p>
+          <div className="lp-contact-info">
+            <div className="lp-contact-item">
+              <span className="lp-contact-label">Email</span>
+              <span className="lp-contact-value">support@maison.com</span>
+            </div>
+            <div className="lp-contact-item">
+              <span className="lp-contact-label">Phone</span>
+              <span className="lp-contact-value">+91 1800-MAISON-1</span>
+            </div>
+            <div className="lp-contact-item">
+              <span className="lp-contact-label">Address</span>
+              <span className="lp-contact-value">Mumbai, India</span>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Footer */}
+      <footer className="lp-footer">
+        <div className="lp-footer-content">
+          <div className="lp-footer-logo">MAISON</div>
+          <p className="lp-footer-text">© 2024 MAISON. All rights reserved.</p>
+        </div>
+      </footer>
 
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </div>
