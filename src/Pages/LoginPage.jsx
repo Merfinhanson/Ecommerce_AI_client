@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { authAPI } from "../services/api";
 import "./LoginPage.css";
 
 const pageVariants = {
@@ -28,9 +29,27 @@ export default function LoginPage() {
     const errs = validate();
     if (Object.keys(errs).length) return setErrors(errs);
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    navigate("/");
+    
+    try {
+      // For demo: simulate login with local storage
+      const mockUser = {
+        email: form.email,
+        name: form.email.split('@')[0],
+        id: '123'
+      };
+      
+      // Store in localStorage
+      localStorage.setItem('token', 'mock-token-' + Date.now());
+      localStorage.setItem('user', JSON.stringify(mockUser));
+      
+      // Wait for animation
+      await new Promise((r) => setTimeout(r, 1200));
+      navigate("/");
+    } catch (err) {
+      setErrors({ submit: 'Login failed. Please try again.' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (field) => (e) => {
@@ -53,7 +72,7 @@ export default function LoginPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1, duration: 0.6 }}
       >
-        <Link to="/" className="login-logo">TECHSTORE</Link>
+        <Link to="/" className="login-logo">MAISON</Link>
         <Link to="/signup" className="login-nav-link">
           <span>New member?</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

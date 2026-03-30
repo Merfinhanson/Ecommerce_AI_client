@@ -40,9 +40,28 @@ export default function SignupPage() {
     const errs = validate();
     if (Object.keys(errs).length) return setErrors(errs);
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    navigate("/login");
+    
+    try {
+      // For demo: save user data to localStorage
+      const userData = {
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        id: 'user-' + Date.now()
+      };
+      
+      // Store in localStorage
+      localStorage.setItem('token', 'mock-token-' + Date.now());
+      localStorage.setItem('user', JSON.stringify(userData));
+      
+      // Wait for animation
+      await new Promise((r) => setTimeout(r, 1200));
+      navigate("/");
+    } catch (err) {
+      setErrors({ submit: 'Signup failed. Please try again.' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (field) => (e) => {
