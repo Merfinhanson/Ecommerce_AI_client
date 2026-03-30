@@ -117,4 +117,5 @@ export const authAPI = {
   },
 };
 
-export default { productAPI, cartAPI, authAPI };
+const api = { productAPI, cartAPI, authAPI };
+export default api;
