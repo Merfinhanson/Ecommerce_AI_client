@@ -54,9 +54,6 @@ export default function SignupPage() {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
-      // Open Google OAuth popup
-      const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID'}&redirect_uri=${encodeURIComponent(window.location.origin)}&response_type=token&scope=email%20profile`;
-      
       // For demo purposes, simulate Google login
       const mockGoogleData = {
         email: "user@gmail.com",
