@@ -1,54 +1,27 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { productAPI } from "../services/api";
 import { products as staticProducts } from "../data/products";
 import ProductCard from "../components/ProductCard";
 import CartDrawer from "../components/CartDrawer";
 import { useCart } from "../context/CartContext";
 import "./LandingPage.css";
-import "../components/Ripple.css";
 
-const TICKER_ITEMS = ["New Arrivals", "◆", "Limited Edition Drops", "◆", "Free Delivery Over ₹50,000"];
+// Filter products for homepage - only featured/new arrivals
+const FEATURED_PRODUCTS = staticProducts.filter(p => 
+  p.badge === "Best Seller" || p.badge === "New Arrival" || p.badge === "Hot"
+).slice(0, 6);
 
-function Ticker() {
-  return (
-    <div className="ticker-wrap">
-      <motion.div
-        className="ticker-track"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 20, ease: "linear", repeat: Infinity }}
-      >
-        {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
-          <span key={i} className="ticker-item">{item}</span>
-        ))}
-      </motion.div>
-    </div>
-  );
-}
-
-const CATEGORIES = [
-  { id: "all", label: "All" },
-  { id: "smartphones", label: "Smartphones" },
-  { id: "laptops", label: "Laptops" },
-  { id: "tablets", label: "Tablets" },
-  { id: "audio", label: "Audio" },
-  { id: "gaming", label: "Gaming" },
-  { id: "wearables", label: "Wearables" },
-  { id: "cameras", label: "Cameras" },
-  { id: "smarthome", label: "Smart Home" },
-  { id: "accessories", label: "Accessories" },
-];
+const NEW_ARRIVALS = staticProducts.filter(p => 
+  p.badge === "New Arrival" || p.badge === "New"
+).slice(0, 4);
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const { itemCount } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
   const [navScrolled, setNavScrolled] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const heroRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
@@ -58,108 +31,65 @@ export default function LandingPage() {
 
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
-  // Fetch products from backend
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const response = await productAPI.getProducts({ limit: 100 });
-        if (response.data && response.data.products) {
-          // Transform backend products to frontend format
-          const transformedProducts = response.data.products.map(p => ({
-            id: p._id,
-            _id: p._id,
-            name: p.name,
-            brand: p.brand,
-            category: p.category,
-            tagline: p.tagline,
-            description: p.description,
-            image: p.image,
-            originalPrice: p.originalPrice,
-            discountedPrice: p.discountedPrice,
-            discount: p.discount,
-            badge: p.badge,
-            inStock: p.inStock,
-            rating: p.rating,
-            reviews: p.reviews
-          }));
-          setProducts(transformedProducts);
-        }
-      } catch (err) {
-        console.error('Failed to fetch products from API, using static data:', err);
-        // Fallback to static data when API fails
-        setProducts(staticProducts);
-        setError(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
   useEffect(() => {
     const onScroll = () => setNavScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const filtered = activeCategory === "all"
-      ? products
-      : products.filter((p) => p.category === activeCategory);
-
-  // Ripple effect handler for buttons
-  const createRipple = useCallback((e) => {
-    const button = e.currentTarget;
-    const rect = button.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    const x = e.clientX - rect.left - size / 2;
-    const y = e.clientY - rect.top - size / 2;
-    
-    const ripple = document.createElement('span');
-    ripple.className = 'btn-ripple-effect';
-    ripple.style.cssText = `
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(201, 168, 76, 0.4);
-      width: ${size}px;
-      height: ${size}px;
-      left: ${x}px;
-      top: ${y}px;
-      pointer-events: none;
-      animation: ripple-animation 0.6s ease-out;
-    `;
-    
-    button.style.position = 'relative';
-    button.style.overflow = 'hidden';
-    button.appendChild(ripple);
-    
-    setTimeout(() => ripple.remove(), 600);
-  }, []);
+  const scrollToSection = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setMobileMenuOpen(false);
+  };
 
   return (
     <div className="lp-root">
+      {/* Navigation */}
       <nav className={`lp-nav ${navScrolled ? "lp-nav--scrolled" : ""}`}>
         <div className="lp-nav-inner">
-          <div className="lp-nav-links">
-            <button onClick={() => document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' })} className="lp-nav-link">Products</button>
-            <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="lp-nav-link">About</button>
-          </div>
-          <div className="lp-nav-logo">MAISON</div>
+          <button 
+            className="lp-nav-hamburger" 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <div className="lp-nav-logo" onClick={() => navigate('/')}>MAISON</div>
+
           <div className="lp-nav-actions">
-            <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="lp-nav-link">Contact</button>
             <button className="lp-nav-signin" onClick={() => navigate('/login')}>Sign In</button>
-            <button className="lp-nav-cart btn-ripple desktop-only" onClick={(e) => { createRipple(e); setCartOpen(true); }}>
+            <button className="lp-nav-cart desktop-only" onClick={() => setCartOpen(true)}>
               Cart ({itemCount})
             </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <motion.div 
+            className="lp-mobile-menu"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+          >
+            <button onClick={() => scrollToSection('featured')}>Featured</button>
+            <button onClick={() => scrollToSection('new-arrivals')}>New Arrivals</button>
+            <button onClick={() => navigate('/products')}>All Products</button>
+            <button onClick={() => scrollToSection('about')}>About</button>
+            <button onClick={() => scrollToSection('contact')}>Contact</button>
+          </motion.div>
+        )}
       </nav>
 
+      {/* Hero Section */}
       <section className="lp-hero" ref={heroRef}>
         <motion.div className="lp-hero-bg" style={{ y: heroY }}>
-            <div className="hero-placeholder">Tech Collection 2025</div>
+          <div className="hero-gradient"></div>
         </motion.div>
+        
         <div className="lp-hero-content">
           <motion.p 
             className="lp-hero-eyebrow"
@@ -167,119 +97,149 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            NEW ARRIVALS — 2026
+            NEXT GEN TECHNOLOGY
           </motion.p>
+          
           <motion.h1 
             className="lp-hero-headline"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Future <em>Tech</em> Today
+            Future Tech<br />
+            <span className="gradient-text">Today</span>
           </motion.h1>
+          
           <motion.p 
             className="lp-hero-sub"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Premium electronics & gadgets from the world's leading brands.<br />
-            Curated for tech enthusiasts who demand excellence.
+            Premium smartphones, laptops, audio & gaming gear.<br />
+            Curated for tech enthusiasts.
           </motion.p>
+
           <motion.div 
             className="lp-hero-buttons"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
           >
-            <button className="lp-hero-btn lp-hero-btn--primary btn-ripple" onClick={(e) => { createRipple(e); document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' }); }}>Explore Tech</button>
-            <button className="lp-hero-btn lp-hero-btn--secondary btn-ripple" onClick={(e) => { createRipple(e); navigate('/signup'); }}>Join Elite</button>
+            <button className="lp-hero-btn lp-hero-btn--primary" onClick={() => scrollToSection('featured')}>
+              Shop Now
+            </button>
+            <button className="lp-hero-btn lp-hero-btn--secondary" onClick={() => navigate('/products')}>
+              View All
+            </button>
           </motion.div>
-        </div>
-        <div className="lp-hero-stats">
+
           <motion.div 
-            className="lp-stat"
+            className="lp-hero-stats"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.0 }}
-            whileHover={{ scale: 1.05 }}
           >
-            <span className="lp-stat-number">50k+</span>
-            <span className="lp-stat-label">Tech Enthusiasts</span>
-          </motion.div>
-          <motion.div 
-            className="lp-stat"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.1 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <span className="lp-stat-number">500+</span>
-            <span className="lp-stat-label">Products</span>
-          </motion.div>
-          <motion.div 
-            className="lp-stat"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.2 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <span className="lp-stat-number">25</span>
-            <span className="lp-stat-label">Countries</span>
+            <div className="lp-stat">
+              <span className="lp-stat-number">50k+</span>
+              <span className="lp-stat-label">Customers</span>
+            </div>
+            <div className="lp-stat">
+              <span className="lp-stat-number">500+</span>
+              <span className="lp-stat-label">Products</span>
+            </div>
+            <div className="lp-stat">
+              <span className="lp-stat-number">4.9</span>
+              <span className="lp-stat-label">Rating</span>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      <Ticker />
+      {/* Featured Products Section */}
+      <section id="featured" className="lp-section lp-section--dark">
+        <div className="lp-section-header">
+          <h2 className="lp-section-title">Featured <span>Products</span></h2>
+          <p className="lp-section-subtitle">Top selling items this week</p>
+        </div>
 
-      <section className="lp-collection" id="products-section">
-        <motion.div 
-          className="lp-filters"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          {CATEGORIES.map((cat, index) => (
-            <motion.button
-              key={cat.id}
-              className={`lp-filter-btn btn-ripple ${activeCategory === cat.id ? "lp-filter-btn--active" : ""}`}
-              onClick={(e) => { createRipple(e); setActiveCategory(cat.id); }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {cat.label}
-            </motion.button>
-          ))}
-        </motion.div>
-        
-        {loading && <div className="lp-loading">Loading products...</div>}
-        {error && <div className="lp-error">Error: {error}</div>}
-
-        <motion.div 
-          className="lp-grid"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          {filtered.map((product, index) => (
+        <div className="lp-products-grid">
+          {FEATURED_PRODUCTS.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <ProductCard product={product} />
             </motion.div>
           ))}
-        </motion.div>
+        </div>
+
+        <div className="lp-section-cta">
+          <button className="lp-btn-outline" onClick={() => navigate('/products')}>
+            View All Products →
+          </button>
+        </div>
+      </section>
+
+      {/* New Arrivals Section */}
+      <section id="new-arrivals" className="lp-section lp-section--gradient">
+        <div className="lp-section-header">
+          <h2 className="lp-section-title">New <span>Arrivals</span></h2>
+          <p className="lp-section-subtitle">Latest tech just landed</p>
+        </div>
+
+        <div className="lp-products-grid lp-products-grid--small">
+          {NEW_ARRIVALS.map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <ProductCard product={product} />
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section className="lp-section lp-section--dark">
+        <div className="lp-section-header">
+          <h2 className="lp-section-title">Shop by <span>Category</span></h2>
+        </div>
+
+        <div className="lp-categories-grid">
+          {[
+            { name: 'Smartphones', icon: '📱', color: '#3b82f6' },
+            { name: 'Laptops', icon: '💻', color: '#8b5cf6' },
+            { name: 'Audio', icon: '🎧', color: '#ec4899' },
+            { name: 'Gaming', icon: '🎮', color: '#10b981' },
+            { name: 'Wearables', icon: '⌚', color: '#f59e0b' },
+            { name: 'Accessories', icon: '🔌', color: '#6b7280' },
+          ].map((cat, index) => (
+            <motion.button
+              key={cat.name}
+              className="lp-category-card"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+              onClick={() => navigate('/products')}
+              style={{ '--category-color': cat.color }}
+            >
+              <span className="lp-category-icon">{cat.icon}</span>
+              <span className="lp-category-name">{cat.name}</span>
+            </motion.button>
+          ))}
+        </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="lp-about">
+      <section id="about" className="lp-section lp-section--about">
         <motion.div 
           className="lp-about-content"
           initial={{ opacity: 0, y: 40 }}
@@ -287,70 +247,66 @@ export default function LandingPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="lp-about-title">About <em>MAISON</em></h2>
-          <p className="lp-about-text">
-            Founded in 2024, MAISON curates the finest electronics and tech accessories 
-            from around the world. We believe in quality, innovation, and exceptional 
-            customer experience. Every product in our collection is handpicked to meet 
-            the highest standards of craftsmanship and performance.
-          </p>
-          <div className="lp-about-stats">
-            <div className="lp-about-stat">
-              <span className="lp-about-number">50k+</span>
-              <span className="lp-about-label">Happy Customers</span>
+          <h2 className="lp-section-title">Why Choose <span>MAISON</span></h2>
+          <div className="lp-features-grid">
+            <div className="lp-feature">
+              <div className="lp-feature-icon">⚡</div>
+              <h3>Fast Delivery</h3>
+              <p>Free shipping on orders over ₹50,000</p>
             </div>
-            <div className="lp-about-stat">
-              <span className="lp-about-number">500+</span>
-              <span className="lp-about-label">Premium Products</span>
+            <div className="lp-feature">
+              <div className="lp-feature-icon">🛡️</div>
+              <h3>2 Year Warranty</h3>
+              <p>Extended warranty on all products</p>
             </div>
-            <div className="lp-about-stat">
-              <span className="lp-about-number">24/7</span>
-              <span className="lp-about-label">Customer Support</span>
+            <div className="lp-feature">
+              <div className="lp-feature-icon">🔄</div>
+              <h3>Easy Returns</h3>
+              <p>30-day hassle-free return policy</p>
+            </div>
+            <div className="lp-feature">
+              <div className="lp-feature-icon">💬</div>
+              <h3>24/7 Support</h3>
+              <p>Round the clock customer service</p>
             </div>
           </div>
         </motion.div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="lp-contact">
-        <motion.div 
-          className="lp-contact-content"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="lp-contact-title">Get in <em>Touch</em></h2>
+      <section id="contact" className="lp-section lp-section--contact">
+        <div className="lp-contact-content">
+          <h2 className="lp-section-title">Get in <span>Touch</span></h2>
           <p className="lp-contact-text">
-            Have questions? We're here to help. Reach out to our team for any 
-            inquiries about products, orders, or partnerships.
+            Have questions? We're here to help 24/7
           </p>
           <div className="lp-contact-info">
-            <div className="lp-contact-item">
+            <a href="mailto:support@maison.com" className="lp-contact-item">
               <span className="lp-contact-label">Email</span>
               <span className="lp-contact-value">support@maison.com</span>
-            </div>
-            <div className="lp-contact-item">
+            </a>
+            <a href="tel:+911800123456" className="lp-contact-item">
               <span className="lp-contact-label">Phone</span>
-              <span className="lp-contact-value">+91 1800-MAISON-1</span>
-            </div>
-            <div className="lp-contact-item">
-              <span className="lp-contact-label">Address</span>
-              <span className="lp-contact-value">Mumbai, India</span>
-            </div>
+              <span className="lp-contact-value">+91 1800-123-456</span>
+            </a>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Footer */}
       <footer className="lp-footer">
         <div className="lp-footer-content">
           <div className="lp-footer-logo">MAISON</div>
+          <div className="lp-footer-links">
+            <button onClick={() => navigate('/products')}>Products</button>
+            <button onClick={() => scrollToSection('about')}>About</button>
+            <button onClick={() => scrollToSection('contact')}>Contact</button>
+          </div>
           <p className="lp-footer-text">© 2024 MAISON. All rights reserved.</p>
         </div>
       </footer>
 
-      {/* Mobile Floating Cart Button */}
+      {/* Mobile Floating Cart */}
       <motion.button
         className="lp-floating-cart"
         onClick={() => setCartOpen(true)}
