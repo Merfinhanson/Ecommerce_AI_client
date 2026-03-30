@@ -181,6 +181,14 @@
   color: var(--gold-light);
 }
 
+.login-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 12px;
+  font-weight: 400;
+}
+
 /* Form */
 .login-form {
   display: flex;
@@ -435,6 +443,62 @@
 
 .login-switch-link:hover::after {
   width: 100%;
+}
+
+/* Divider */
+.login-divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.login-divider span {
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+/* Social Login */
+.login-social {
+  display: flex;
+  gap: 12px;
+}
+
+.login-social-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-social-btn:hover {
+  border-color: var(--gold);
+  background: rgba(201, 168, 76, 0.05);
+}
+
+.login-social-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 @media (max-width: 600px) {

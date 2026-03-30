@@ -1,24 +1,97 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import StarRating from "./StarRating";
 import { useCart } from "../context/CartContext";
 import "./ProductCard.css";
+import "./Ripple.css";
 
 export default function ProductCard({ product }) {
   const { addToCart, lastAdded } = useCart();
   const [showReviews, setShowReviews] = useState(false);
+  const [ripples, setRipples] = useState([]);
   const isJustAdded = lastAdded === product.id;
+
+  // Card ripple effect
+  const handleCardClick = useCallback((e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const newRipple = { x, y, id: Date.now() };
+    setRipples((prev) => [...prev, newRipple]);
+    
+    setTimeout(() => {
+      setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
+    }, 800);
+  }, []);
+
+  // Button ripple effect
+  const createButtonRipple = useCallback((e) => {
+    const button = e.currentTarget;
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+    
+    const ripple = document.createElement('span');
+    ripple.style.cssText = `
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      width: ${size}px;
+      height: ${size}px;
+      left: ${x}px;
+      top: ${y}px;
+      pointer-events: none;
+      animation: ripple-animation 0.6s ease-out;
+    `;
+    
+    button.style.position = 'relative';
+    button.style.overflow = 'hidden';
+    button.appendChild(ripple);
+    
+    setTimeout(() => ripple.remove(), 600);
+  }, []);
 
   return (
     <motion.div
-      className="pc-card"
+      className="pc-card card-ripple shine-effect"
       layout
       initial={{ opacity: 0, y: 28 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 16 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -6 }}
+      whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(201, 168, 76, 0.15)" }}
+      onClick={handleCardClick}
+      style={{ '--ripple-x': '50%', '--ripple-y': '50%' }}
     >
+      {/* Ripple effects */}
+      <AnimatePresence>
+        {ripples.map((ripple) => (
+          <motion.span
+            key={ripple.id}
+            className="card-ripple-effect"
+            initial={{ scale: 0, opacity: 0.5 }}
+            animate={{ scale: 4, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            style={{
+              position: 'absolute',
+              left: ripple.x,
+              top: ripple.y,
+              width: 100,
+              height: 100,
+              marginLeft: -50,
+              marginTop: -50,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(201, 168, 76, 0.3) 0%, transparent 70%)',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+          />
+        ))}
+      </AnimatePresence>
       {/* Badge */}
       {product.badge && (
         <span className={`pc-badge pc-badge--${product.badge.toLowerCase().replace(/\s+/g, "-")}`}>
@@ -65,8 +138,11 @@ export default function ProductCard({ product }) {
 
         {/* CTA */}
         <motion.button
-          className={`pc-add-btn ${isJustAdded ? "pc-add-btn--added" : ""}`}
-          onClick={() => addToCart(product)}
+          className={`pc-add-btn btn-ripple ${isJustAdded ? "pc-add-btn--added" : ""}`}
+          onClick={(e) => {
+            createButtonRipple(e);
+            addToCart(product);
+          }}
           whileTap={{ scale: 0.96 }}
         >
           <AnimatePresence mode="wait">

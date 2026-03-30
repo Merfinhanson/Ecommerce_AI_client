@@ -1,0 +1,185 @@
+.ripple-wrapper {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(201, 168, 76, 0.4);
+  pointer-events: none;
+  transform-origin: center;
+}
+
+.ripple-effect.dark {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.ripple-effect.light {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Button ripple styles */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease-out, height 0.6s ease-out, opacity 0.6s ease-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.btn-ripple:active::after {
+  width: 300%;
+  height: 300%;
+  opacity: 1;
+  transition: 0s;
+}
+
+/* Card ripple effect */
+.card-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-ripple::before {
+  content: "";
+  position: absolute;
+  top: var(--ripple-y, 50%);
+  left: var(--ripple-x, 50%);
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.8s ease-out, height 0.8s ease-out, opacity 0.8s ease-out;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card-ripple.rippling::before {
+  width: 200%;
+  height: 200%;
+  opacity: 1;
+}
+
+/* Animated gradient border for cards */
+@keyframes borderGlow {
+  0%, 100% {
+    border-color: rgba(201, 168, 76, 0.3);
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.1);
+  }
+  50% {
+    border-color: rgba(201, 168, 76, 0.6);
+    box-shadow: 0 0 30px rgba(201, 168, 76, 0.2);
+  }
+}
+
+.card-glow {
+  animation: borderGlow 3s ease-in-out infinite;
+}
+
+/* Shine effect on hover */
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: none;
+}
+
+.shine-effect:hover::after {
+  animation: shine 0.8s ease-in-out;
+}
+
+/* Pulse animation for badges */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.badge-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Button ripple animation */
+@keyframes ripple-animation {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Card ripple effect styles */
+.card-ripple-effect {
+  pointer-events: none;
+}
+
+/* Enhanced hover glow for cards */
+.pc-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.pc-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(201, 168, 76, 0.06),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pc-card:hover::before {
+  opacity: 1;
+}
