@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { productAPI } from "../services/api";
 import ProductCard from "../components/ProductCard";
 import CartDrawer from "../components/CartDrawer";
