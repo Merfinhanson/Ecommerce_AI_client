@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { productAPI } from "../services/api";
 import { products as staticProducts } from "../data/products";
 import ProductCard from "../components/ProductCard";
@@ -40,6 +41,7 @@ const CATEGORIES = [
 ];
 
 export default function LandingPage() {
+  const navigate = useNavigate();
   const { itemCount } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
   const [navScrolled, setNavScrolled] = useState(false);
@@ -189,8 +191,8 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
           >
-            <button className="lp-hero-btn lp-hero-btn--primary btn-ripple" onClick={createRipple}>Explore Tech</button>
-            <button className="lp-hero-btn lp-hero-btn--secondary btn-ripple" onClick={createRipple}>Join Elite</button>
+            <button className="lp-hero-btn lp-hero-btn--primary btn-ripple" onClick={(e) => { createRipple(e); document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' }); }}>Explore Tech</button>
+            <button className="lp-hero-btn lp-hero-btn--secondary btn-ripple" onClick={(e) => { createRipple(e); navigate('/signup'); }}>Join Elite</button>
           </motion.div>
         </div>
         <div className="lp-hero-stats">
@@ -229,7 +231,7 @@ export default function LandingPage() {
 
       <Ticker />
 
-      <section className="lp-collection" id="collection">
+      <section className="lp-collection" id="products-section">
         <motion.div 
           className="lp-filters"
           initial={{ opacity: 0, y: 20 }}
