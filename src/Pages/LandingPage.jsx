@@ -142,12 +142,13 @@ export default function LandingPage() {
       <nav className={`lp-nav ${navScrolled ? "lp-nav--scrolled" : ""}`}>
         <div className="lp-nav-inner">
           <div className="lp-nav-links">
-            <a href="#collection" className="lp-nav-link">Collection</a>
-            <a href="#about" className="lp-nav-link">About</a>
+            <button onClick={() => document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' })} className="lp-nav-link">Products</button>
+            <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="lp-nav-link">About</button>
           </div>
-          <div className="lp-nav-logo">MAISON</div>
+          <div className="lp-nav-logo">TECHSTORE</div>
           <div className="lp-nav-actions">
-            <a href="#contact" className="lp-nav-link">Contact</a>
+            <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="lp-nav-link">Contact</button>
+            <button className="lp-nav-signin" onClick={() => navigate('/login')}>Sign In</button>
             <button className="lp-nav-cart btn-ripple" onClick={(e) => { createRipple(e); setCartOpen(true); }}>
               Cart ({itemCount})
             </button>

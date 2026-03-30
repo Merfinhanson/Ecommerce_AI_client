@@ -85,6 +85,24 @@
 }
 .lp-nav-links li a:hover { color: #C9A84C; }
 .lp-nav-links--right { margin-left: auto; }
+.lp-nav-signin {
+  background: transparent;
+  border: 1px solid #C9A84C;
+  color: #C9A84C;
+  padding: 8px 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lp-nav-signin:hover {
+  background: #C9A84C;
+  color: #0a0a0a;
+}
+
 .lp-nav-cart {
   background: none;
   border: 1px solid #2a2a2a;
