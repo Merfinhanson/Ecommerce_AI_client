@@ -149,7 +149,7 @@ export default function LandingPage() {
           <div className="lp-nav-actions">
             <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="lp-nav-link">Contact</button>
             <button className="lp-nav-signin" onClick={() => navigate('/login')}>Sign In</button>
-            <button className="lp-nav-cart btn-ripple" onClick={(e) => { createRipple(e); setCartOpen(true); }}>
+            <button className="lp-nav-cart btn-ripple desktop-only" onClick={(e) => { createRipple(e); setCartOpen(true); }}>
               Cart ({itemCount})
             </button>
           </div>

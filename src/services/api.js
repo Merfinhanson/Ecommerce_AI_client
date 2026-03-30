@@ -115,6 +115,16 @@ export const authAPI = {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   },
+
+  googleLogin: (userData) => fetchAPI('/auth/google', {
+    method: 'POST',
+    body: JSON.stringify(userData),
+  }),
+
+  appleLogin: (userData) => fetchAPI('/auth/apple', {
+    method: 'POST',
+    body: JSON.stringify(userData),
+  }),
 };
 
 const api = { productAPI, cartAPI, authAPI };

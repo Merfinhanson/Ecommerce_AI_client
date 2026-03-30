@@ -1078,3 +1078,9 @@
     display: none;
   }
 }
+
+@media (max-width: 600px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
