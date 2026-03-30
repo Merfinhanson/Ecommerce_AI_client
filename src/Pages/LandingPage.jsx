@@ -350,6 +350,24 @@ export default function LandingPage() {
         </div>
       </footer>
 
+      {/* Mobile Floating Cart Button */}
+      <motion.button
+        className="lp-floating-cart"
+        onClick={() => setCartOpen(true)}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M6 6h15l-1.5 9h-12z" />
+          <circle cx="9" cy="20" r="1" />
+          <circle cx="18" cy="20" r="1" />
+          <path d="M6 6L5 3H2" />
+        </svg>
+        {itemCount > 0 && <span className="lp-floating-cart-count">{itemCount}</span>}
+      </motion.button>
+
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </div>
   );

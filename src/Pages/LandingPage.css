@@ -858,9 +858,33 @@
   .lp-footer-top { grid-template-columns: 1fr 1fr; padding: 60px 0 40px; }
   .lp-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
   .lp-grid { grid-template-columns: 1fr; }
-  .lp-hero-headline { font-size: 3rem; }
-  .lp-nav-inner { padding: 0 20px; }
+  .lp-hero-headline { font-size: 2.5rem; }
+  .lp-hero-content { padding: 0 20px; }
+  .lp-hero { min-height: auto; padding: 120px 0 60px; }
+  .lp-hero-stats { 
+    position: static; 
+    flex-direction: row; 
+    justify-content: center; 
+    transform: none; 
+    margin-top: 30px; 
+    gap: 24px; 
+  }
+  .lp-stat { text-align: center; }
+  .lp-stat-number { font-size: 1.5rem; }
+  .lp-stat-label { font-size: 0.6rem; }
+  .lp-nav-inner { padding: 0 16px; height: 60px; }
+  .lp-nav-logo { font-size: 1.3rem; letter-spacing: 0.2em; }
+  .lp-nav-actions { gap: 12px; }
+  .lp-nav-signin { padding: 6px 12px; font-size: 0.6rem; }
+  .lp-nav-cart { padding: 6px 10px; font-size: 0.6rem; }
   .lp-floating-cart { bottom: 20px; right: 20px; }
+  .lp-about { padding: 60px 20px; }
+  .lp-about-title { font-size: 2rem; }
+  .lp-about-number { font-size: 2rem; }
+  .lp-about-stats { gap: 40px; }
+  .lp-contact { padding: 60px 20px; }
+  .lp-contact-title { font-size: 2rem; }
+  .lp-contact-info { gap: 30px; }
 }
 
 /* ── ABOUT SECTION ─────────────────────────────────────── */
@@ -1006,4 +1030,51 @@
 .lp-footer-text {
   font-size: 0.85rem;
   color: #5a5a5a;
+}
+
+/* ── FLOATING CART BUTTON ─────────────────────────────── */
+.lp-floating-cart {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #C9A84C;
+  border: none;
+  color: #0a0a0a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(201, 168, 76, 0.4);
+  z-index: 900;
+  transition: transform 0.2s ease;
+}
+
+.lp-floating-cart svg {
+  width: 24px;
+  height: 24px;
+}
+
+.lp-floating-cart-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #fff;
+  color: #0a0a0a;
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 601px) {
+  .lp-floating-cart {
+    display: none;
+  }
 }
