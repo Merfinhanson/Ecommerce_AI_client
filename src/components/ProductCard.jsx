@@ -54,20 +54,30 @@ export default function ProductCard({ product }) {
     setTimeout(() => ripple.remove(), 600);
   }, []);
 
+  const [isFlipped, setIsFlipped] = useState(false);
+
   return (
-    <motion.div
-      className="pc-card card-ripple shine-effect"
-      layout
-      initial={{ opacity: 0, y: 28 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 16 }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(201, 168, 76, 0.15)" }}
-      onClick={handleCardClick}
-      style={{ '--ripple-x': '50%', '--ripple-y': '50%' }}
-    >
-      {/* Ripple effects */}
-      <AnimatePresence>
+    <div className="pc-perspective">
+      <motion.div
+        className={`pc-card-wrapper ${isFlipped ? 'flipped' : ''}`}
+        layout
+        initial={{ opacity: 0, y: 28 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 16 }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        whileHover={{ y: -6 }}
+        style={{ '--ripple-x': '50%', '--ripple-y': '50%' }}
+      >
+        <div className="pc-card-inner">
+          {/* Front Face */}
+          <div className="pc-card-front pc-card card-ripple shine-effect"
+               onClick={(e) => {
+                 handleCardClick(e);
+                 setIsFlipped(!isFlipped);
+               }}
+          >
+            {/* Ripple effects */}
+            <AnimatePresence>
         {ripples.map((ripple) => (
           <motion.span
             key={ripple.id}
@@ -191,6 +201,28 @@ export default function ProductCard({ product }) {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+          </div>
+        
+        {/* Back Face */}
+        <div className="pc-card-back">
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '20px' }}>{product.name}</h3>
+          <p style={{ fontSize: '0.9rem', marginBottom: '16px', opacity: 0.9 }}>{product.description}</p>
+          <div style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '8px' }}>
+            ₹{(product.discountedPrice * 83).toLocaleString('en-IN')}
+          </div>
+          <button 
+            className="pc-add-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              addToCart(product);
+            }}
+            style={{ background: 'white', color: '#6366f1', marginTop: '20px' }}
+          >
+            Add to Cart
+          </button>
+          <p style={{ marginTop: '16px', fontSize: '0.8rem', opacity: 0.7 }}>Click to flip back</p>
+        </div>
+      </div>
+    </div>
   );
 }

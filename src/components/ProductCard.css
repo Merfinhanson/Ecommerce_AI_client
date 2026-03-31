@@ -1,8 +1,58 @@
-/* ── Modern Tech Product Card ───────────────────────────── */
-.pc-card {
+/* ── Modern Tech Product Card with Flip Effect ─────────── */
+.pc-perspective {
+  perspective: 1000px;
+}
+
+.pc-card-wrapper {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.pc-card-inner {
   position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.pc-card-wrapper.flipped .pc-card-inner {
+  transform: rotateY(180deg);
+}
+
+.pc-card-front,
+.pc-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.pc-card-front {
   background: #1a1a2e;
   border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pc-card-back {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pc-card {
+  position: relative;
+  background: transparent;
+  border: none;
   border-radius: 16px;
   overflow: hidden;
   display: flex;
@@ -12,7 +62,6 @@
 
 .pc-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(99, 102, 241, 0.3);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
