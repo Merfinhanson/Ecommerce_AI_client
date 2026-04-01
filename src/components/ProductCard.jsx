@@ -78,151 +78,153 @@ export default function ProductCard({ product }) {
           >
             {/* Ripple effects */}
             <AnimatePresence>
-        {ripples.map((ripple) => (
-          <motion.span
-            key={ripple.id}
-            className="card-ripple-effect"
-            initial={{ scale: 0, opacity: 0.5 }}
-            animate={{ scale: 4, opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            style={{
-              position: 'absolute',
-              left: ripple.x,
-              top: ripple.y,
-              width: 100,
-              height: 100,
-              marginLeft: -50,
-              marginTop: -50,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(201, 168, 76, 0.3) 0%, transparent 70%)',
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          />
-        ))}
-      </AnimatePresence>
-      {/* Badge */}
-      {product.badge && (
-        <span className={`pc-badge pc-badge--${product.badge.toLowerCase().replace(/\s+/g, "-")}`}>
-          {product.badge}
-        </span>
-      )}
-
-      {/* Image */}
-      <div className="pc-img-wrap">
-        <img src={product.image} alt={product.name} className="pc-img" loading="lazy" />
-        <div className="pc-img-overlay">
-          <button
-            className="pc-quick-view"
-            onClick={() => setShowReviews((v) => !v)}
-          >
-            {showReviews ? "Hide Reviews" : "Read Reviews"}
-          </button>
-        </div>
-      </div>
-
-      {/* Body */}
-      <div className="pc-body">
-        <p className="pc-brand">{product.brand}</p>
-        <h3 className="pc-name">{product.name}</h3>
-        <p className="pc-tagline">{product.tagline}</p>
-        <p className="pc-desc">{product.description}</p>
-
-        {/* Rating */}
-        <div className="pc-rating-row">
-          <StarRating rating={product.rating} />
-          <span className="pc-rating-val">{product.rating}</span>
-        </div>
-
-        {/* Price */}
-        <div className="pc-price-row">
-          <span className="pc-price-original">
-            ₹{(product.originalPrice * 83).toLocaleString("en-IN")}
-          </span>
-          <span className="pc-price-discounted">
-            ₹{(product.discountedPrice * 83).toLocaleString("en-IN")}
-          </span>
-          <span className="pc-discount-badge">−{product.discount}%</span>
-        </div>
-
-        {/* CTA */}
-        <motion.button
-          className={`pc-add-btn btn-ripple ${isJustAdded ? "pc-add-btn--added" : ""}`}
-          onClick={(e) => {
-            createButtonRipple(e);
-            addToCart(product);
-          }}
-          whileTap={{ scale: 0.96 }}
-        >
-          <AnimatePresence mode="wait">
-            {isJustAdded ? (
-              <motion.span
-                key="added"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-              >
-                ✓ Added
-              </motion.span>
-            ) : (
-              <motion.span
-                key="add"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-              >
-                Add to Cart
-              </motion.span>
+              {ripples.map((ripple) => (
+                <motion.span
+                  key={ripple.id}
+                  className="card-ripple-effect"
+                  initial={{ scale: 0, opacity: 0.5 }}
+                  animate={{ scale: 4, opacity: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  style={{
+                    position: 'absolute',
+                    left: ripple.x,
+                    top: ripple.y,
+                    width: 100,
+                    height: 100,
+                    marginLeft: -50,
+                    marginTop: -50,
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(201, 168, 76, 0.3) 0%, transparent 70%)',
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                  }}
+                />
+              ))}
+            </AnimatePresence>
+            
+            {/* Badge */}
+            {product.badge && (
+              <span className={`pc-badge pc-badge--${product.badge.toLowerCase().replace(/\s+/g, "-")}`}>
+                {product.badge}
+              </span>
             )}
-          </AnimatePresence>
-        </motion.button>
-      </div>
 
-      {/* Reviews panel */}
-      <AnimatePresence>
-        {showReviews && (
-          <motion.div
-            className="pc-reviews"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {product.reviews.map((r, i) => (
-              <div key={i} className="pc-review-item">
-                <div className="pc-review-header">
-                  <StarRating rating={r.stars} size={11} />
-                  <span className="pc-review-author">{r.author}</span>
-                </div>
-                <p className="pc-review-text">"{r.text}"</p>
+            {/* Image */}
+            <div className="pc-img-wrap">
+              <img src={product.image} alt={product.name} className="pc-img" loading="lazy" />
+              <div className="pc-img-overlay">
+                <button
+                  className="pc-quick-view"
+                  onClick={() => setShowReviews((v) => !v)}
+                >
+                  {showReviews ? "Hide Reviews" : "Read Reviews"}
+                </button>
               </div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+
+            {/* Body */}
+            <div className="pc-body">
+              <p className="pc-brand">{product.brand}</p>
+              <h3 className="pc-name">{product.name}</h3>
+              <p className="pc-tagline">{product.tagline}</p>
+              <p className="pc-desc">{product.description}</p>
+
+              {/* Rating */}
+              <div className="pc-rating-row">
+                <StarRating rating={product.rating} />
+                <span className="pc-rating-val">{product.rating}</span>
+              </div>
+
+              {/* Price */}
+              <div className="pc-price-row">
+                <span className="pc-price-original">
+                  ₹{(product.originalPrice * 83).toLocaleString("en-IN")}
+                </span>
+                <span className="pc-price-discounted">
+                  ₹{(product.discountedPrice * 83).toLocaleString("en-IN")}
+                </span>
+                <span className="pc-discount-badge">−{product.discount}%</span>
+              </div>
+
+              {/* CTA */}
+              <motion.button
+                className={`pc-add-btn btn-ripple ${isJustAdded ? "pc-add-btn--added" : ""}`}
+                onClick={(e) => {
+                  createButtonRipple(e);
+                  addToCart(product);
+                }}
+                whileTap={{ scale: 0.96 }}
+              >
+                <AnimatePresence mode="wait">
+                  {isJustAdded ? (
+                    <motion.span
+                      key="added"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                    >
+                      ✓ Added
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="add"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                    >
+                      Add to Cart
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            </div>
+
+            {/* Reviews panel */}
+            <AnimatePresence>
+              {showReviews && (
+                <motion.div
+                  className="pc-reviews"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {product.reviews.map((r, i) => (
+                    <div key={i} className="pc-review-item">
+                      <div className="pc-review-header">
+                        <StarRating rating={r.stars} size={11} />
+                        <span className="pc-review-author">{r.author}</span>
+                      </div>
+                      <p className="pc-review-text">"{r.text}"</p>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        
-        {/* Back Face */}
-        <div className="pc-card-back">
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '20px' }}>{product.name}</h3>
-          <p style={{ fontSize: '0.9rem', marginBottom: '16px', opacity: 0.9 }}>{product.description}</p>
-          <div style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '8px' }}>
-            ₹{(product.discountedPrice * 83).toLocaleString('en-IN')}
+          
+          {/* Back Face */}
+          <div className="pc-card-back">
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '20px' }}>{product.name}</h3>
+            <p style={{ fontSize: '0.9rem', marginBottom: '16px', opacity: 0.9 }}>{product.description}</p>
+            <div style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '8px' }}>
+              ₹{(product.discountedPrice * 83).toLocaleString('en-IN')}
+            </div>
+            <button 
+              className="pc-add-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart(product);
+              }}
+              style={{ background: 'white', color: '#6366f1', marginTop: '20px' }}
+            >
+              Add to Cart
+            </button>
+            <p style={{ marginTop: '16px', fontSize: '0.8rem', opacity: 0.7 }}>Click to flip back</p>
           </div>
-          <button 
-            className="pc-add-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              addToCart(product);
-            }}
-            style={{ background: 'white', color: '#6366f1', marginTop: '20px' }}
-          >
-            Add to Cart
-          </button>
-          <p style={{ marginTop: '16px', fontSize: '0.8rem', opacity: 0.7 }}>Click to flip back</p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
