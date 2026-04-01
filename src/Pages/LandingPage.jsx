@@ -22,7 +22,16 @@ export default function LandingPage() {
   const [cartOpen, setCartOpen] = useState(false);
   const [navScrolled, setNavScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const heroRef = useRef(null);
+
+  // Load current user from localStorage
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      setCurrentUser(JSON.parse(user));
+    }
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -60,7 +69,19 @@ export default function LandingPage() {
           <div className="lp-nav-logo" onClick={() => navigate('/')}>MAISON</div>
 
           <div className="lp-nav-actions">
-            <button className="lp-nav-signin" onClick={() => navigate('/login')}>Sign In</button>
+            {currentUser ? (
+              <>
+                <span className="lp-nav-user">{currentUser.name || currentUser.email}</span>
+                <button className="lp-nav-signout" onClick={() => {
+                  localStorage.removeItem('token');
+                  localStorage.removeItem('user');
+                  setCurrentUser(null);
+                  window.location.reload();
+                }}>Sign Out</button>
+              </>
+            ) : (
+              <button className="lp-nav-signin" onClick={() => navigate('/login')}>Sign In</button>
+            )}
             <button className="lp-nav-cart desktop-only" onClick={() => setCartOpen(true)}>
               Cart ({itemCount})
             </button>

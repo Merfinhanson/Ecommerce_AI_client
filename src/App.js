@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { CartProvider } from "./context/CartContext";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import LandingPage from "./Pages/LandingPage";
 import LoginPage from "./Pages/LoginPage";
 import SignupPage from "./Pages/SignupPage";
@@ -26,12 +27,16 @@ function AnimatedRoutes() {
 }
 
 function App() {
+  const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
+  
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <AnimatedRoutes />
-      </BrowserRouter>
-    </CartProvider>
+    <GoogleOAuthProvider clientId={googleClientId}>
+      <CartProvider>
+        <BrowserRouter>
+          <AnimatedRoutes />
+        </BrowserRouter>
+      </CartProvider>
+    </GoogleOAuthProvider>
   );
 }
 export default App;

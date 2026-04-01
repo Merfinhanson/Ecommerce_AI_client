@@ -13,6 +13,11 @@ export default function CartDrawer({ isOpen, onClose }) {
     navigate("/checkout");
   };
 
+  // Prevent event propagation for buttons to avoid triggering parent events
+  const stopPropagation = (e) => {
+    e.stopPropagation();
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -73,13 +78,42 @@ export default function CartDrawer({ isOpen, onClose }) {
                         <p className="cd-item-brand">{item.brand}</p>
                         <p className="cd-item-name">{item.name}</p>
                         <p className="cd-item-price">
-                          ₹{(item.discountedPrice * 83).toLocaleString("en-IN")}
+                          ₹{item.discountedPrice.toLocaleString("en-IN")}
                         </p>
                         <div className="cd-qty-row">
-                          <button className="cd-qty-btn" onClick={() => updateQty(item.id, -1)}>−</button>
+                          <button 
+                            type="button" 
+                            className="cd-qty-btn" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              updateQty(item.id, -1);
+                            }}
+                            disabled={item.qty <= 1}
+                          >
+                            −
+                          </button>
                           <span className="cd-qty">{item.qty}</span>
-                          <button className="cd-qty-btn" onClick={() => updateQty(item.id, 1)}>+</button>
-                          <button className="cd-remove" onClick={() => removeFromCart(item.id)}>Remove</button>
+                          <button 
+                            type="button" 
+                            className="cd-qty-btn" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              updateQty(item.id, 1);
+                            }}
+                            disabled={item.qty >= (item.inStock || 10)}
+                          >
+                            +
+                          </button>
+                          <button 
+                            type="button" 
+                            className="cd-remove" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeFromCart(item.id);
+                            }}
+                          >
+                            Remove
+                          </button>
                         </div>
                       </div>
                     </motion.div>
@@ -93,10 +127,18 @@ export default function CartDrawer({ isOpen, onClose }) {
               <div className="cd-footer">
                 <div className="cd-total-row">
                   <span className="cd-total-label">Subtotal</span>
-                  <span className="cd-total-val">₹{(total * 83).toLocaleString("en-IN")}</span>
+                  <span className="cd-total-val">₹{total.toLocaleString("en-IN")}</span>
                 </div>
                 <p className="cd-tax-note">Taxes & duties calculated at checkout</p>
-                <button className="cd-checkout-btn" onClick={handleCheckout}>
+                <button 
+                  type="button" 
+                  className="cd-checkout-btn" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCheckout();
+                  }}
+                  disabled={cartItems.length === 0}
+                >
                   Proceed to Checkout
                 </button>
               </div>

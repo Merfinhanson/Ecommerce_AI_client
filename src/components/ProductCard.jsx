@@ -139,10 +139,10 @@ export default function ProductCard({ product }) {
               {/* Price */}
               <div className="pc-price-row">
                 <span className="pc-price-original">
-                  ₹{(product.originalPrice * 83).toLocaleString("en-IN")}
+                  ₹{product.originalPrice.toLocaleString("en-IN")}
                 </span>
                 <span className="pc-price-discounted">
-                  ₹{(product.discountedPrice * 83).toLocaleString("en-IN")}
+                  ₹{product.discountedPrice.toLocaleString("en-IN")}
                 </span>
                 <span className="pc-discount-badge">−{product.discount}%</span>
               </div>
@@ -209,7 +209,7 @@ export default function ProductCard({ product }) {
             <h3 style={{ fontSize: '1.5rem', marginBottom: '20px' }}>{product.name}</h3>
             <p style={{ fontSize: '0.9rem', marginBottom: '16px', opacity: 0.9 }}>{product.description}</p>
             <div style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '8px' }}>
-              ₹{(product.discountedPrice * 83).toLocaleString('en-IN')}
+              ₹{product.discountedPrice.toLocaleString('en-IN')}
             </div>
             <button 
               className="pc-add-btn"
